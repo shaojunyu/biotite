@@ -64,16 +64,12 @@ jobs:
           MATRIX=$(
             {
               cibuildwheel --print-build-identifiers --platform linux \
-              | jq -nRc '{"dist": inputs, "os": "ubuntu-latest"}' \
-              && cibuildwheel --print-build-identifiers --platform macos \
-              | jq -nRc '{"dist": inputs, "os": "macos-latest"}' \
-              && cibuildwheel --print-build-identifiers --platform windows \
-              | jq -nRc '{"dist": inputs, "os": "windows-latest"}'
+              | jq -nRc '{"dist": inputs, "os": "ubuntu-latest"}'
             } | jq -sc
           )
           echo "include=$MATRIX" | tee -a $GITHUB_OUTPUT
         env:
-          CIBW_ARCHS_LINUX: "x86_64"
+          CIBW_ARCHS_LINUX: "x86_64 aarch64"
           CIBW_ARCHS_MACOS: "x86_64 arm64"
           CIBW_ARCHS_WINDOWS: "x86 AMD64"
           # Skip musllinux because it takes too long to compile on GHA
